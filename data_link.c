@@ -36,6 +36,7 @@ void handle_client(int sock, FILE *fptr,int sock1){
         //READING NUM OF REPS
         while(1){
                 read(sock,&number, sizeof(number));
+		write(sock1,&number, sizeof(number));
                 if(number==0) break;
                 //Reading length word
                 read(sock,&wordlen,sizeof(wordlen));
@@ -48,7 +49,7 @@ void handle_client(int sock, FILE *fptr,int sock1){
                         if (hours<12) fprintf(fptr,"[%02d/%02d/%d %02d:%02d:%02d] INPUT %d: %s \n", day, month, year, hours, minutes, seconds, i, buffer);
                         else fprintf(fptr,"[%02d/%02d/%d %02d:%02d:%02d] INPUT %d: %s \n", day, month, year, hours-12, minutes, seconds, i, buffer);
                         delay(rand()%10); //DELAY ALEATORI DE 0-9s
-                        write(sock1,buffer,BUFFSIZE); //POOOT FALLAR (ENVIEM LA PARAULA A LA BS)
+                        write(sock1,&buffer[0],wordlen); //POOOT FALLAR (ENVIEM LA PARAULA A LA BS)
                         if(hours<12) fprintf(fptr,"[%02d/%02d/%d %02d:%02d:%02d] OUTPUT %d: %s \n", day, month, year, hours, minutes, seconds, i, buffer);
                         else fprintf(fptr,"[%02d/%02d/%d %02d:%02d:%02d] OUTPUT %d: %s \n", day, month, year, hours-12, minutes, seconds, i, buffer);
                 }
